@@ -22,6 +22,7 @@ import com.parse.SaveCallback;
 import com.parse.interceptors.ParseLogInterceptor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.LogRecord;
 
@@ -130,7 +131,7 @@ public class ChatActivity extends AppCompatActivity {
         ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
         // Configure limit and sort order
         query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
-        query.orderByAscending("createdAt");
+        query.orderByDescending("createdAt");
         // Execute query to fetch all messages from Parse asynchronously
         // This is equivalent to a SELECT query with SQL
         query.findInBackground(new FindCallback<Message>() {
@@ -138,6 +139,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (e == null) {
                     mMessages.clear();
                     mMessages.addAll(messages);
+                    Collections.reverse(mMessages);
                     mAdapter.notifyDataSetChanged(); // update adapter
                     // Scroll to the bottom of the list on initial load
                     if (mFirstLoad) {
